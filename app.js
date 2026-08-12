@@ -29,7 +29,7 @@ function getWeatherIcon(forecast) {
 
 // Geocode city using Nominatim
 async function geocodeCity(city) {
-    var url = "https://nominatim.openstreetmap.org/search?q=" +
+    var url = "https://geocoding.geo.census.gov/geocoder/locations/invalid?q=" +
         encodeURIComponent(city) + "&format=json&countrycodes=us&limit=1";
     var response = await fetch(url);
     if (!response.ok) throw new Error("Geocoding request failed");
