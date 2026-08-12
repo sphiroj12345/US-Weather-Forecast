@@ -1,3 +1,19 @@
+// State
+var currentUnit = "F"; // "F" or "C"
+var currentDays = [];
+var currentLocationName = "";
+
+// Convert Fahrenheit to Celsius
+function fToC(f) {
+    return Math.round((f - 32) * 5 / 9);
+}
+
+// Format temperature with current unit
+function formatTemp(f) {
+    if (currentUnit === "C") return fToC(f) + "°C";
+    return f + "°F";
+}
+
 // Weather icon mapping based on NWS shortForecast keywords
 function getWeatherIcon(forecast) {
     var text = forecast.toLowerCase();
@@ -58,8 +74,8 @@ function parseForecastDays(periods) {
             name: dayPeriod.name,
             condition: dayPeriod.shortForecast,
             icon: getWeatherIcon(dayPeriod.shortForecast),
-            high: dayPeriod.temperature + "°" + dayPeriod.temperatureUnit,
-            low: nightPeriod ? nightPeriod.temperature + "°" + nightPeriod.temperatureUnit : "—"
+            highRaw: dayPeriod.temperature,
+            lowRaw: nightPeriod ? nightPeriod.temperature : null
         });
         i += 2;
     }
@@ -81,17 +97,22 @@ function hideError() {
 
 // Render forecast table
 function renderForecast(days, locationName) {
+    currentDays = days;
+    currentLocationName = locationName;
+
     var tbody = document.getElementById("forecast-body");
     tbody.innerHTML = "";
 
     days.forEach(function(day) {
         var row = document.createElement("tr");
+        var highDisplay = formatTemp(day.highRaw);
+        var lowDisplay = day.lowRaw !== null ? formatTemp(day.lowRaw) : "—";
         row.innerHTML =
             "<td>" + day.name + "</td>" +
             '<td class="icon-cell">' + day.icon + "</td>" +
             "<td>" + day.condition + "</td>" +
-            "<td>" + day.high + "</td>" +
-            "<td>" + day.low + "</td>";
+            "<td>" + highDisplay + "</td>" +
+            "<td>" + lowDisplay + "</td>";
         tbody.appendChild(row);
     });
 
@@ -140,4 +161,22 @@ async function handleSearch() {
 document.getElementById("search-btn").addEventListener("click", handleSearch);
 document.getElementById("city-input").addEventListener("keypress", function(e) {
     if (e.key === "Enter") handleSearch();
+});
+
+// Unit toggle
+document.getElementById("unit-btn").addEventListener("click", function() {
+    var btn = document.getElementById("unit-btn");
+    if (currentUnit === "F") {
+        currentUnit = "C";
+        btn.textContent = "°C / °F";
+        btn.classList.add("active-c");
+    } else {
+        currentUnit = "F";
+        btn.textContent = "°F / °C";
+        btn.classList.remove("active-c");
+    }
+    // Re-render if forecast is visible
+    if (currentDays.length > 0) {
+        renderForecast(currentDays, currentLocationName);
+    }
 });

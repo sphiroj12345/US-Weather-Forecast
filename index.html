@@ -81,6 +81,22 @@
         tr:hover { background: #ebf8ff; }
         .icon-cell { font-size: 24px; text-align: center; }
         #forecast-container { display: none; }
+        .unit-toggle {
+            text-align: right;
+            margin-bottom: 12px;
+        }
+        #unit-btn {
+            padding: 6px 14px;
+            font-size: 14px;
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        #unit-btn:hover { background: #e2e8f0; }
+        #unit-btn.active-c { border-color: #3182ce; background: #ebf8ff; }
     </style>
 </head>
 <body>
@@ -88,6 +104,9 @@
     <div class="search-box">
         <input type="text" id="city-input" placeholder="Enter a US city name..." aria-label="City name">
         <button id="search-btn">Get Forecast</button>
+    </div>
+    <div class="unit-toggle">
+        <button id="unit-btn" aria-label="Toggle temperature unit">°F / °C</button>
     </div>
     <div id="error-msg"></div>
     <div id="forecast-container">

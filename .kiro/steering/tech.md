@@ -1,13 +1,9 @@
----
-inclusion: always
----
-
 # Tech Stack
 
 ## Languages & Frameworks
 - Plain HTML5
 - Vanilla JavaScript (no frameworks, no build step)
-- CSS (inline or in a `<style>` block)
+- CSS (inline in a `<style>` block within index.html)
 
 ## External APIs
 - Nominatim geocoding: `https://nominatim.openstreetmap.org/search`
@@ -26,12 +22,14 @@ Start the app:
 
 Validate JavaScript syntax:
 ```bash
-node --check <filename>.js
+node --check app.js
 ```
 
 ## Constraints
-- No build tools, bundlers, or package managers required
-- No Node.js runtime dependencies (node_modules not used at runtime)
+- No build tools, bundlers, or package managers
+- No Node.js runtime dependencies (node_modules not used)
 - No API keys needed
 - No caching layer
 - No classes or interfaces
+- Use `var` declarations and `function` keyword (ES5-compatible style)
+- NWS requests require a `User-Agent` header
